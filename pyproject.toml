@@ -1,0 +1,14 @@
+[project]
+name = "langchain-lab"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
+members = ["01_legacy_agents", "02_modern_agents_v1", "03_custom_graphs"]
+
+[tool.uv.workspace]
+members = [
+    "03_custom_graphs",
+    "04_rag_patterns",
+]

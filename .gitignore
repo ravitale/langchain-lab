@@ -1,0 +1,24 @@
+# Virtual Environments (finds them in subfolders too)
+**/.venv/
+**/venv/
+uv.lock
+.python-version
+
+# Python artifacts
+**/__pycache__/
+*.py[cod]
+*$py.class
+dist/
+build/
+*.egg-info/
+
+# Environment secrets
+.env
+.env.local
+.env.*
+!.env.example
+
+# IDEs
+.vscode/
+.idea/
+.DS_Store
