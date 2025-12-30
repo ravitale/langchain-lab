@@ -3,8 +3,12 @@ from duckduckgo_search import DDGS
 from langchain.agents import AgentExecutor, create_react_agent
 from langchain.chat_models import ChatOpenAI
 from langchain.llms import OpenAI
+from langchain.output_parsers import PydanticOutputParser
 from langchain.prompts import PromptTemplate
 from langchain.tools import Tool
+from langchain_core.runnables import RunnableLambda
+
+from schemas import AgentResponse
 
 # Load OpenAI API key from .env
 load_dotenv()
@@ -27,6 +31,8 @@ tools = [
         description="Performs live web searches using DuckDuckGo",
     )
 ]
+output_parser = PydanticOutputParser(return_id=True, pydantic_object=AgentResponse)
+
 # -------------------------
 # 2️⃣ Initialize LLM
 # -------------------------
@@ -43,7 +49,7 @@ react_prompt = PromptTemplate(
 You are a ReAct agent.
 
 You MUST follow this loop exactly:
-Bola → Action → Action Input → Observation
+Thought → Action → Action Input → Observation
 
 Rules:
 - Do NOT answer the question until you have received at least one Observation.
@@ -59,15 +65,15 @@ Valid actions are: [{tool_names}]
 Format your response exactly like this:
 
 Question: {input}
-Bola: <reasoning>
+Thought: <reasoning>
 Action: <one of [{tool_names}]>
 Action Input: <input>
 Observation: <this will be provided to you>
 {agent_scratchpad}
-Bola: I now know the final answer
-Final Answer: <answer derived ONLY from observations>
+Thought: I now know the final answer
+Final Answer: <answer derived ONLY from observations>. The original in put question formatted according to format instructions: {format_instructions}
 """,
-)
+).partial(format_instructions=output_parser.get_format_instructions())
 
 # -------------------------
 # 4️⃣ Create ReAct agent
@@ -92,9 +98,9 @@ chain = agent_executor
 # -------------------------
 def main():
     print("Hello from classic 0.1.0 ReAct agent!")
-    query = "Addition of 2 and 2 is it 4 ?"
+    query = "Search for 3 ai engineer jobs in Seattle and list down the job titles"
     result = chain.invoke(input={"input": query})
-    print("\nFinal Answer:", result)
+    print("\nFinal Answer:", output_parser.parse(result["output"]))
 
 
 # -------------------------

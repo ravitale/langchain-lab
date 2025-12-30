@@ -43,7 +43,7 @@ react_prompt = PromptTemplate(
 You are a ReAct agent.
 
 You MUST follow this loop exactly:
-Bola → Action → Action Input → Observation
+Thought → Action → Action Input → Observation
 
 Rules:
 - Do NOT answer the question until you have received at least one Observation.
@@ -59,12 +59,12 @@ Valid actions are: [{tool_names}]
 Format your response exactly like this:
 
 Question: {input}
-Bola: <reasoning>
+Thought: <reasoning>
 Action: <one of [{tool_names}]>
 Action Input: <input>
 Observation: <this will be provided to you>
 {agent_scratchpad}
-Bola: I now know the final answer
+Thought: I now know the final answer
 Final Answer: <answer derived ONLY from observations>
 """,
 )
