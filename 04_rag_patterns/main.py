@@ -7,10 +7,11 @@ import os
 
 load_dotenv()
 
+
 def main():
     current_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(current_dir, "investing.txt")
-    
+
     # Load the document
     loader = TextLoader(file_path, encoding="utf-8")
     documents = loader.load()
@@ -23,14 +24,15 @@ def main():
     for chunk in chunks:
         print(chunk.page_content)
         print("--------------------------------------------------")
-    
+
     # create embeddings
     embeddings = OpenAIEmbeddings(openai_api_key=os.environ.get("OPENAI_API_KEY"))
 
-    PineconeVectorStore.from_documents(chunks, embeddings, index_name=os.environ.get("PINECONE_INDEX_NAME"))
+    PineconeVectorStore.from_documents(
+        chunks, embeddings, index_name=os.environ.get("PINECONE_INDEX_NAME")
+    )
 
     print("Vector store created successfully")
-
 
 
 if __name__ == "__main__":
