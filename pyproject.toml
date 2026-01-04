@@ -11,4 +11,5 @@ members = ["01_legacy_agents", "02_modern_agents_v1", "03_custom_graphs"]
 members = [
     "03_custom_graphs",
     "04_rag_patterns",
+    "00_small_labs",
 ]
